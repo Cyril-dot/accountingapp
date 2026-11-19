@@ -1,0 +1,8 @@
+# Reference material — large downloads, not versioned
+*.zip
+*.apk
+inspected/
+
+# OS noise
+Thumbs.db
+.DS_Store
