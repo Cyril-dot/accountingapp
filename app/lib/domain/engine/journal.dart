@@ -1,7 +1,8 @@
 /// One side of a double-entry posting. Exactly one of [debit] or [credit] is
-/// positive; both are integer pesewas and never negative.
+/// positive; both are integer pesewas and never negative. [accountId] is the
+/// database id of a chart-of-accounts row.
 class JournalLine {
-  final String accountId;
+  final int accountId;
   final int debit;
   final int credit;
 
@@ -15,7 +16,7 @@ class JournalLine {
 class JournalEntry {
   final String memo;
   final String refType; // sale | purchase | payment | expense | opening | manual
-  final String? refId; // link back to the source document
+  final int? refId; // link back to the source document
   final List<JournalLine> lines;
 
   const JournalEntry({
@@ -36,16 +37,16 @@ class JournalEntry {
 class Journalizer {
   /// Sale paid now. Dr cash/momo/bank, Cr sales, Cr VAT output; Dr COGS, Cr inventory.
   static JournalEntry saleCash({
-    required String methodAccountId,
-    required String salesAccountId,
-    required String vatOutputAccountId,
-    required String inventoryAccountId,
-    required String cogsAccountId,
+    required int methodAccountId,
+    required int salesAccountId,
+    required int vatOutputAccountId,
+    required int inventoryAccountId,
+    required int cogsAccountId,
     required int totalPesewas,
     required int netPesewas,
     required int taxPesewas,
     required int costPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Cash sale',
@@ -63,16 +64,16 @@ class Journalizer {
 
   /// Sale on credit. Same as cash but Dr accounts receivable instead of cash.
   static JournalEntry saleCredit({
-    required String receivableAccountId,
-    required String salesAccountId,
-    required String vatOutputAccountId,
-    required String inventoryAccountId,
-    required String cogsAccountId,
+    required int receivableAccountId,
+    required int salesAccountId,
+    required int vatOutputAccountId,
+    required int inventoryAccountId,
+    required int cogsAccountId,
     required int totalPesewas,
     required int netPesewas,
     required int taxPesewas,
     required int costPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Credit sale',
@@ -90,13 +91,13 @@ class Journalizer {
 
   /// Purchase paid now. Dr inventory, Dr VAT input, Cr cash/momo/bank.
   static JournalEntry purchaseCash({
-    required String inventoryAccountId,
-    required String vatInputAccountId,
-    required String methodAccountId,
+    required int inventoryAccountId,
+    required int vatInputAccountId,
+    required int methodAccountId,
     required int netPesewas,
     required int taxPesewas,
     required int totalPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Cash purchase',
@@ -112,13 +113,13 @@ class Journalizer {
 
   /// Purchase on credit. Dr inventory, Dr VAT input, Cr accounts payable.
   static JournalEntry purchaseCredit({
-    required String inventoryAccountId,
-    required String vatInputAccountId,
-    required String payableAccountId,
+    required int inventoryAccountId,
+    required int vatInputAccountId,
+    required int payableAccountId,
     required int netPesewas,
     required int taxPesewas,
     required int totalPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Credit purchase',
@@ -134,10 +135,10 @@ class Journalizer {
 
   /// A customer pays us. Dr cash/momo/bank, Cr accounts receivable.
   static JournalEntry paymentReceived({
-    required String methodAccountId,
-    required String receivableAccountId,
+    required int methodAccountId,
+    required int receivableAccountId,
     required int amountPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Payment received',
@@ -152,10 +153,10 @@ class Journalizer {
 
   /// We pay a supplier. Dr accounts payable, Cr cash/momo/bank.
   static JournalEntry paymentMade({
-    required String payableAccountId,
-    required String methodAccountId,
+    required int payableAccountId,
+    required int methodAccountId,
     required int amountPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Payment made',
@@ -170,12 +171,12 @@ class Journalizer {
 
   /// Expense paid now. Dr expense, Dr VAT input, Cr cash/momo/bank.
   static JournalEntry expenseCash({
-    required String expenseAccountId,
-    required String vatInputAccountId,
-    required String methodAccountId,
+    required int expenseAccountId,
+    required int vatInputAccountId,
+    required int methodAccountId,
     required int amountPesewas,
     required int taxInputPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Cash expense',
@@ -192,12 +193,12 @@ class Journalizer {
 
   /// Expense bought on credit from a supplier. Dr expense, Dr VAT input, Cr payable.
   static JournalEntry expenseCredit({
-    required String expenseAccountId,
-    required String vatInputAccountId,
-    required String payableAccountId,
+    required int expenseAccountId,
+    required int vatInputAccountId,
+    required int payableAccountId,
     required int amountPesewas,
     required int taxInputPesewas,
-    String? refId,
+    int? refId,
   }) {
     return JournalEntry(
       memo: 'Credit expense',

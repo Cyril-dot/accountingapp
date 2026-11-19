@@ -65,7 +65,7 @@ class Accounts extends Table with Timestamped {
 }
 
 /// Tax rates are global (shared across shops). Rates are data, not code.
-@DataClassName('TaxRate')
+@DataClassName('TaxRateRow')
 class TaxRates extends Table with Timestamped {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
@@ -223,7 +223,7 @@ class StockMovements extends Table with Timestamped {
 
 }
 
-@DataClassName('JournalEntry')
+@DataClassName('JournalEntryRow')
 class JournalEntries extends Table with Timestamped {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get shopId => integer()();
@@ -236,7 +236,7 @@ class JournalEntries extends Table with Timestamped {
 
 }
 
-@DataClassName('JournalLine')
+@DataClassName('JournalLineRow')
 class JournalLines extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get entryId => integer()();

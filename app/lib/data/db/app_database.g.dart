@@ -2303,7 +2303,8 @@ class AccountsCompanion extends UpdateCompanion<Account> {
   }
 }
 
-class $TaxRatesTable extends TaxRates with TableInfo<$TaxRatesTable, TaxRate> {
+class $TaxRatesTable extends TaxRates
+    with TableInfo<$TaxRatesTable, TaxRateRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2417,7 +2418,7 @@ class $TaxRatesTable extends TaxRates with TableInfo<$TaxRatesTable, TaxRate> {
   static const String $name = 'tax_rates';
   @override
   VerificationContext validateIntegrity(
-    Insertable<TaxRate> instance, {
+    Insertable<TaxRateRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2471,9 +2472,9 @@ class $TaxRatesTable extends TaxRates with TableInfo<$TaxRatesTable, TaxRate> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TaxRate map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TaxRateRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TaxRate(
+    return TaxRateRow(
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -2520,7 +2521,7 @@ class $TaxRatesTable extends TaxRates with TableInfo<$TaxRatesTable, TaxRate> {
       const EnumNameConverter<TaxKind>(TaxKind.values);
 }
 
-class TaxRate extends DataClass implements Insertable<TaxRate> {
+class TaxRateRow extends DataClass implements Insertable<TaxRateRow> {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final int id;
@@ -2529,7 +2530,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
   final TaxKind taxKind;
   final bool isLevy;
   final bool isActive;
-  const TaxRate({
+  const TaxRateRow({
     required this.createdAt,
     this.updatedAt,
     required this.id,
@@ -2574,12 +2575,12 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
     );
   }
 
-  factory TaxRate.fromJson(
+  factory TaxRateRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TaxRate(
+    return TaxRateRow(
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
       id: serializer.fromJson<int>(json['id']),
@@ -2609,7 +2610,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
     };
   }
 
-  TaxRate copyWith({
+  TaxRateRow copyWith({
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
     int? id,
@@ -2618,7 +2619,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
     TaxKind? taxKind,
     bool? isLevy,
     bool? isActive,
-  }) => TaxRate(
+  }) => TaxRateRow(
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
     id: id ?? this.id,
@@ -2628,8 +2629,8 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
     isLevy: isLevy ?? this.isLevy,
     isActive: isActive ?? this.isActive,
   );
-  TaxRate copyWithCompanion(TaxRatesCompanion data) {
-    return TaxRate(
+  TaxRateRow copyWithCompanion(TaxRatesCompanion data) {
+    return TaxRateRow(
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       id: data.id.present ? data.id.value : this.id,
@@ -2643,7 +2644,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
 
   @override
   String toString() {
-    return (StringBuffer('TaxRate(')
+    return (StringBuffer('TaxRateRow(')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('id: $id, ')
@@ -2670,7 +2671,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TaxRate &&
+      (other is TaxRateRow &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.id == this.id &&
@@ -2681,7 +2682,7 @@ class TaxRate extends DataClass implements Insertable<TaxRate> {
           other.isActive == this.isActive);
 }
 
-class TaxRatesCompanion extends UpdateCompanion<TaxRate> {
+class TaxRatesCompanion extends UpdateCompanion<TaxRateRow> {
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
   final Value<int> id;
@@ -2712,7 +2713,7 @@ class TaxRatesCompanion extends UpdateCompanion<TaxRate> {
   }) : name = Value(name),
        rateBp = Value(rateBp),
        taxKind = Value(taxKind);
-  static Insertable<TaxRate> custom({
+  static Insertable<TaxRateRow> custom({
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<int>? id,
@@ -9198,7 +9199,7 @@ class StockMovementsCompanion extends UpdateCompanion<StockMovement> {
 }
 
 class $JournalEntriesTable extends JournalEntries
-    with TableInfo<$JournalEntriesTable, JournalEntry> {
+    with TableInfo<$JournalEntriesTable, JournalEntryRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -9324,7 +9325,7 @@ class $JournalEntriesTable extends JournalEntries
   static const String $name = 'journal_entries';
   @override
   VerificationContext validateIntegrity(
-    Insertable<JournalEntry> instance, {
+    Insertable<JournalEntryRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -9396,9 +9397,9 @@ class $JournalEntriesTable extends JournalEntries
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  JournalEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+  JournalEntryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return JournalEntry(
+    return JournalEntryRow(
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -9455,7 +9456,7 @@ class $JournalEntriesTable extends JournalEntries
   );
 }
 
-class JournalEntry extends DataClass implements Insertable<JournalEntry> {
+class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final int id;
@@ -9466,7 +9467,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
   final String refType;
   final int? refId;
   final JournalStatus journalStatus;
-  const JournalEntry({
+  const JournalEntryRow({
     required this.createdAt,
     this.updatedAt,
     required this.id,
@@ -9521,12 +9522,12 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     );
   }
 
-  factory JournalEntry.fromJson(
+  factory JournalEntryRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return JournalEntry(
+    return JournalEntryRow(
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
       id: serializer.fromJson<int>(json['id']),
@@ -9560,7 +9561,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     };
   }
 
-  JournalEntry copyWith({
+  JournalEntryRow copyWith({
     DateTime? createdAt,
     Value<DateTime?> updatedAt = const Value.absent(),
     int? id,
@@ -9571,7 +9572,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     String? refType,
     Value<int?> refId = const Value.absent(),
     JournalStatus? journalStatus,
-  }) => JournalEntry(
+  }) => JournalEntryRow(
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
     id: id ?? this.id,
@@ -9583,8 +9584,8 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     refId: refId.present ? refId.value : this.refId,
     journalStatus: journalStatus ?? this.journalStatus,
   );
-  JournalEntry copyWithCompanion(JournalEntriesCompanion data) {
-    return JournalEntry(
+  JournalEntryRow copyWithCompanion(JournalEntriesCompanion data) {
+    return JournalEntryRow(
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       id: data.id.present ? data.id.value : this.id,
@@ -9602,7 +9603,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
 
   @override
   String toString() {
-    return (StringBuffer('JournalEntry(')
+    return (StringBuffer('JournalEntryRow(')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('id: $id, ')
@@ -9633,7 +9634,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is JournalEntry &&
+      (other is JournalEntryRow &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.id == this.id &&
@@ -9646,7 +9647,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
           other.journalStatus == this.journalStatus);
 }
 
-class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
+class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
   final Value<int> id;
@@ -9686,7 +9687,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
        memo = Value(memo),
        refType = Value(refType),
        journalStatus = Value(journalStatus);
-  static Insertable<JournalEntry> custom({
+  static Insertable<JournalEntryRow> custom({
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<int>? id,
@@ -9795,7 +9796,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
 }
 
 class $JournalLinesTable extends JournalLines
-    with TableInfo<$JournalLinesTable, JournalLine> {
+    with TableInfo<$JournalLinesTable, JournalLineRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -9864,7 +9865,7 @@ class $JournalLinesTable extends JournalLines
   static const String $name = 'journal_lines';
   @override
   VerificationContext validateIntegrity(
-    Insertable<JournalLine> instance, {
+    Insertable<JournalLineRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -9906,9 +9907,9 @@ class $JournalLinesTable extends JournalLines
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  JournalLine map(Map<String, dynamic> data, {String? tablePrefix}) {
+  JournalLineRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return JournalLine(
+    return JournalLineRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -9938,13 +9939,13 @@ class $JournalLinesTable extends JournalLines
   }
 }
 
-class JournalLine extends DataClass implements Insertable<JournalLine> {
+class JournalLineRow extends DataClass implements Insertable<JournalLineRow> {
   final int id;
   final int entryId;
   final int accountId;
   final int debit;
   final int credit;
-  const JournalLine({
+  const JournalLineRow({
     required this.id,
     required this.entryId,
     required this.accountId,
@@ -9972,12 +9973,12 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     );
   }
 
-  factory JournalLine.fromJson(
+  factory JournalLineRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return JournalLine(
+    return JournalLineRow(
       id: serializer.fromJson<int>(json['id']),
       entryId: serializer.fromJson<int>(json['entryId']),
       accountId: serializer.fromJson<int>(json['accountId']),
@@ -9997,21 +9998,21 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     };
   }
 
-  JournalLine copyWith({
+  JournalLineRow copyWith({
     int? id,
     int? entryId,
     int? accountId,
     int? debit,
     int? credit,
-  }) => JournalLine(
+  }) => JournalLineRow(
     id: id ?? this.id,
     entryId: entryId ?? this.entryId,
     accountId: accountId ?? this.accountId,
     debit: debit ?? this.debit,
     credit: credit ?? this.credit,
   );
-  JournalLine copyWithCompanion(JournalLinesCompanion data) {
-    return JournalLine(
+  JournalLineRow copyWithCompanion(JournalLinesCompanion data) {
+    return JournalLineRow(
       id: data.id.present ? data.id.value : this.id,
       entryId: data.entryId.present ? data.entryId.value : this.entryId,
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
@@ -10022,7 +10023,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
 
   @override
   String toString() {
-    return (StringBuffer('JournalLine(')
+    return (StringBuffer('JournalLineRow(')
           ..write('id: $id, ')
           ..write('entryId: $entryId, ')
           ..write('accountId: $accountId, ')
@@ -10037,7 +10038,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is JournalLine &&
+      (other is JournalLineRow &&
           other.id == this.id &&
           other.entryId == this.entryId &&
           other.accountId == this.accountId &&
@@ -10045,7 +10046,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           other.credit == this.credit);
 }
 
-class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
+class JournalLinesCompanion extends UpdateCompanion<JournalLineRow> {
   final Value<int> id;
   final Value<int> entryId;
   final Value<int> accountId;
@@ -10066,7 +10067,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.credit = const Value.absent(),
   }) : entryId = Value(entryId),
        accountId = Value(accountId);
-  static Insertable<JournalLine> custom({
+  static Insertable<JournalLineRow> custom({
     Expression<int>? id,
     Expression<int>? entryId,
     Expression<int>? accountId,
@@ -11480,14 +11481,17 @@ class $$TaxRatesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $TaxRatesTable,
-          TaxRate,
+          TaxRateRow,
           $$TaxRatesTableFilterComposer,
           $$TaxRatesTableOrderingComposer,
           $$TaxRatesTableAnnotationComposer,
           $$TaxRatesTableCreateCompanionBuilder,
           $$TaxRatesTableUpdateCompanionBuilder,
-          (TaxRate, BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRate>),
-          TaxRate,
+          (
+            TaxRateRow,
+            BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRateRow>,
+          ),
+          TaxRateRow,
           PrefetchHooks Function()
         > {
   $$TaxRatesTableTableManager(_$AppDatabase db, $TaxRatesTable table)
@@ -11544,8 +11548,8 @@ class $$TaxRatesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$TaxRatesTable, TaxRate>(table),
-                  BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRate>(
+                  e.readTable<$TaxRatesTable, TaxRateRow>(table),
+                  BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRateRow>(
                     db,
                     table,
                     e,
@@ -11562,14 +11566,14 @@ typedef $$TaxRatesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $TaxRatesTable,
-      TaxRate,
+      TaxRateRow,
       $$TaxRatesTableFilterComposer,
       $$TaxRatesTableOrderingComposer,
       $$TaxRatesTableAnnotationComposer,
       $$TaxRatesTableCreateCompanionBuilder,
       $$TaxRatesTableUpdateCompanionBuilder,
-      (TaxRate, BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRate>),
-      TaxRate,
+      (TaxRateRow, BaseReferences<_$AppDatabase, $TaxRatesTable, TaxRateRow>),
+      TaxRateRow,
       PrefetchHooks Function()
     >;
 typedef $$PartiesTableCreateCompanionBuilder =
@@ -14936,17 +14940,21 @@ class $$JournalEntriesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $JournalEntriesTable,
-          JournalEntry,
+          JournalEntryRow,
           $$JournalEntriesTableFilterComposer,
           $$JournalEntriesTableOrderingComposer,
           $$JournalEntriesTableAnnotationComposer,
           $$JournalEntriesTableCreateCompanionBuilder,
           $$JournalEntriesTableUpdateCompanionBuilder,
           (
-            JournalEntry,
-            BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntry>,
+            JournalEntryRow,
+            BaseReferences<
+              _$AppDatabase,
+              $JournalEntriesTable,
+              JournalEntryRow
+            >,
           ),
-          JournalEntry,
+          JournalEntryRow,
           PrefetchHooks Function()
         > {
   $$JournalEntriesTableTableManager(
@@ -15013,11 +15021,11 @@ class $$JournalEntriesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$JournalEntriesTable, JournalEntry>(table),
+                  e.readTable<$JournalEntriesTable, JournalEntryRow>(table),
                   BaseReferences<
                     _$AppDatabase,
                     $JournalEntriesTable,
-                    JournalEntry
+                    JournalEntryRow
                   >(db, table, e),
                 ),
               )
@@ -15031,17 +15039,17 @@ typedef $$JournalEntriesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $JournalEntriesTable,
-      JournalEntry,
+      JournalEntryRow,
       $$JournalEntriesTableFilterComposer,
       $$JournalEntriesTableOrderingComposer,
       $$JournalEntriesTableAnnotationComposer,
       $$JournalEntriesTableCreateCompanionBuilder,
       $$JournalEntriesTableUpdateCompanionBuilder,
       (
-        JournalEntry,
-        BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntry>,
+        JournalEntryRow,
+        BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntryRow>,
       ),
-      JournalEntry,
+      JournalEntryRow,
       PrefetchHooks Function()
     >;
 typedef $$JournalLinesTableCreateCompanionBuilder =
@@ -15161,17 +15169,17 @@ class $$JournalLinesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $JournalLinesTable,
-          JournalLine,
+          JournalLineRow,
           $$JournalLinesTableFilterComposer,
           $$JournalLinesTableOrderingComposer,
           $$JournalLinesTableAnnotationComposer,
           $$JournalLinesTableCreateCompanionBuilder,
           $$JournalLinesTableUpdateCompanionBuilder,
           (
-            JournalLine,
-            BaseReferences<_$AppDatabase, $JournalLinesTable, JournalLine>,
+            JournalLineRow,
+            BaseReferences<_$AppDatabase, $JournalLinesTable, JournalLineRow>,
           ),
-          JournalLine,
+          JournalLineRow,
           PrefetchHooks Function()
         > {
   $$JournalLinesTableTableManager(_$AppDatabase db, $JournalLinesTable table)
@@ -15216,11 +15224,11 @@ class $$JournalLinesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$JournalLinesTable, JournalLine>(table),
+                  e.readTable<$JournalLinesTable, JournalLineRow>(table),
                   BaseReferences<
                     _$AppDatabase,
                     $JournalLinesTable,
-                    JournalLine
+                    JournalLineRow
                   >(db, table, e),
                 ),
               )
@@ -15234,17 +15242,17 @@ typedef $$JournalLinesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $JournalLinesTable,
-      JournalLine,
+      JournalLineRow,
       $$JournalLinesTableFilterComposer,
       $$JournalLinesTableOrderingComposer,
       $$JournalLinesTableAnnotationComposer,
       $$JournalLinesTableCreateCompanionBuilder,
       $$JournalLinesTableUpdateCompanionBuilder,
       (
-        JournalLine,
-        BaseReferences<_$AppDatabase, $JournalLinesTable, JournalLine>,
+        JournalLineRow,
+        BaseReferences<_$AppDatabase, $JournalLinesTable, JournalLineRow>,
       ),
-      JournalLine,
+      JournalLineRow,
       PrefetchHooks Function()
     >;
 

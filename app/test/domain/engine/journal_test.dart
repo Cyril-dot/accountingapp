@@ -2,17 +2,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sikabooks/domain/engine/journal.dart';
 
 // Account ids used throughout.
-const cash = 'cash';
-const momo = 'momo';
-const bank = 'bank';
-const receivable = 'receivable';
-const payable = 'payable';
-const inventory = 'inventory';
-const sales = 'sales';
-const vatOutput = 'vat_output';
-const vatInput = 'vat_input';
-const cogs = 'cogs';
-const rent = 'rent_expense';
+const cash = 1;
+const momo = 2;
+const bank = 3;
+const receivable = 4;
+const payable = 5;
+const inventory = 6;
+const sales = 7;
+const vatOutput = 8;
+const vatInput = 9;
+const cogs = 10;
+const rent = 11;
 
 void main() {
   group('Journalizer', () {
@@ -30,9 +30,9 @@ void main() {
       );
       expect(e.isBalanced, isTrue);
 
-      int debitOf(String id) =>
+      int debitOf(int id) =>
           e.lines.where((l) => l.accountId == id).fold(0, (s, l) => s + l.debit);
-      int creditOf(String id) =>
+      int creditOf(int id) =>
           e.lines.where((l) => l.accountId == id).fold(0, (s, l) => s + l.credit);
 
       expect(debitOf(cash), 1150);
