@@ -24,6 +24,21 @@ final authServiceProvider =
     Provider((ref) => AuthService(ref.watch(databaseProvider)));
 final exportServiceProvider =
     Provider((ref) => ExportService(ref.watch(databaseProvider)));
+
+/// The currently signed-in user (null while locked). Drives role-based UI.
+class CurrentUser extends Notifier<User?> {
+  @override
+  User? build() => null;
+
+  void signIn(User user) => state = user;
+  void signOut() => state = null;
+}
+
+final currentUserProvider = NotifierProvider<CurrentUser, User?>(CurrentUser.new);
+
+final usersProvider = FutureProvider.family<List<User>, int>(
+  (ref, shopId) => ref.watch(authServiceProvider).users(shopId),
+);
 final saleServiceProvider =
     Provider((ref) => SaleService(ref.watch(databaseProvider)));
 final purchaseServiceProvider =

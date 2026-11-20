@@ -7,31 +7,20 @@ import '../lock/lock_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 
 /// Decides between onboarding, the PIN lock, and the app shell.
-class RootScreen extends ConsumerStatefulWidget {
+class RootScreen extends ConsumerWidget {
   const RootScreen({super.key});
 
   @override
-  ConsumerState<RootScreen> createState() => _RootScreenState();
-}
-
-class _RootScreenState extends ConsumerState<RootScreen> {
-  bool _locked = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final shop = ref.watch(currentShopProvider);
+    final user = ref.watch(currentUserProvider);
     return shop.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Center(child: Text('Failed to load: $e'))),
       data: (shop) {
         if (shop == null) return const OnboardingScreen();
-        if (_locked) {
-          return LockScreen(
-            shopId: shop.id,
-            onUnlock: () => setState(() => _locked = false),
-          );
-        }
+        if (user == null) return LockScreen(shopId: shop.id);
         return HomeShell(shopId: shop.id);
       },
     );

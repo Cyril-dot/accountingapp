@@ -1,4 +1,5 @@
 import '../../core/pin_hasher.dart';
+import '../../domain/models/enums.dart';
 import '../db/app_database.dart';
 
 /// Verifies a shop PIN against its active users. Returns the matched user, or
@@ -16,5 +17,24 @@ class AuthService {
       if (PinHasher.verify(pin, u.pinHash)) return u;
     }
     return null;
+  }
+
+  Future<List<User>> users(int shopId) =>
+      (db.select(db.users)..where((u) => u.shopId.equals(shopId))).get();
+
+  Future<int> addUser({
+    required int shopId,
+    required String fullName,
+    required String pinHash,
+    required UserRole role,
+  }) {
+    return db.into(db.users).insert(
+          UsersCompanion.insert(
+            shopId: shopId,
+            fullName: fullName,
+            pinHash: pinHash,
+            role: role,
+          ),
+        );
   }
 }

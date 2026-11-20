@@ -37,8 +37,9 @@ name, screens and wording. Nothing is copied from the proprietary APK.
       and reports behind a bottom-nav shell.
 - [x] PIN lock on launch, invoice list, per-account ledger, money-owed.
 - [x] Invoice PDF generation + WhatsApp share (pdf/share_plus).
-- [x] Backup database + export journal to CSV (Excel-compatible); 53 tests.
-- [ ] POS (barcode + printer), multi-user role enforcement.
+- [x] Backup database + export journal to CSV (Excel-compatible).
+- [x] Multi-user roles: Users screen, PIN sign-in, cashier sees restricted shell; 54 tests.
+- [ ] POS (barcode + printer), Ghana VAT/levy report, stock alerts.
 
 ## Decisions (Phase 0, resolved)
 

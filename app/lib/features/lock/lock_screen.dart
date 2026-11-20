@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app_providers.dart';
 
-/// Asks for the shop PIN before showing the books. On success, calls [onUnlock].
+/// Asks for the shop PIN before showing the books. On success it signs the
+/// user in (which the root screen observes and unlocks the app).
 class LockScreen extends ConsumerStatefulWidget {
   final int shopId;
-  final VoidCallback onUnlock;
-  const LockScreen({super.key, required this.shopId, required this.onUnlock});
+  const LockScreen({super.key, required this.shopId});
 
   @override
   ConsumerState<LockScreen> createState() => _LockScreenState();
@@ -31,7 +31,7 @@ class _LockScreenState extends ConsumerState<LockScreen> {
     final user = await ref.read(authServiceProvider).verifyPin(widget.shopId, pin);
     if (!mounted) return;
     if (user != null) {
-      widget.onUnlock();
+      ref.read(currentUserProvider.notifier).signIn(user);
     } else {
       setState(() {
         _busy = false;
