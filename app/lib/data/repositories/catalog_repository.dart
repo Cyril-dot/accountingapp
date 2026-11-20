@@ -94,6 +94,20 @@ class CatalogRepository {
     return q.get();
   }
 
+  Future<Invoice?> invoice(int id) =>
+      (db.select(db.invoices)..where((i) => i.id.equals(id))).getSingleOrNull();
+
+  Future<List<InvoiceLine>> invoiceLines(int invoiceId) =>
+      (db.select(db.invoiceLines)
+            ..where((l) => l.invoiceId.equals(invoiceId)))
+          .get();
+
+  Future<Business?> firstBusiness() =>
+      (db.select(db.businesses)..limit(1)).getSingleOrNull();
+
+  Future<Party?> party(int id) =>
+      (db.select(db.parties)..where((p) => p.id.equals(id))).getSingleOrNull();
+
   /// Returns the id of a "Walk-in customer" party, creating it on first use.
   Future<int> findOrCreateWalkInCustomer(int shopId) async {
     final rows = await (db.select(db.parties)

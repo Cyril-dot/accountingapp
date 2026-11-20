@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app_providers.dart';
 import '../../core/money.dart';
 import '../../data/db/app_database.dart';
+import 'invoice_detail_screen.dart';
 
 class InvoicesScreen extends ConsumerWidget {
   final int shopId;
@@ -37,6 +38,12 @@ class InvoicesScreen extends ConsumerWidget {
                 trailing: Text(
                   Money(inv.total).format(),
                   style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => InvoiceDetailScreen(
+                        shopId: shopId, invoiceId: inv.id),
+                  ),
                 ),
               );
             },

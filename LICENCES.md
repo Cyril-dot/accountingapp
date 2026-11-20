@@ -105,3 +105,14 @@ be GPL. So:
 - LGPL → only as an unmodified separate library, never copied in.
 - GPL → ideas only (copying it would relicense us to GPL, which conflicts with MIT).
 - The Tacktile APK → study behaviour only, copy nothing.
+
+## App dependencies (licences verified when added)
+
+| Package | Licence | Use |
+|---|---|---|
+| drift / drift_flutter / drift_dev | MIT | Local SQLite database + codegen. |
+| flutter_riverpod | MIT | State management. |
+| crypto | BSD-3-Clause | HMAC-SHA256 for PIN hashing. |
+| pdf | Apache-2.0 | Invoice/receipt PDF generation. |
+| share_plus | BSD-3-Clause | Share PDFs via WhatsApp/other apps. |
+| path_provider | BSD-3-Clause | Temp/backup file locations. |
