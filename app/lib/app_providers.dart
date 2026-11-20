@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data/db/app_database.dart';
+import 'data/repositories/catalog_repository.dart';
 import 'data/services/expense_service.dart';
 import 'data/services/onboarding_service.dart';
 import 'data/services/payment_service.dart';
@@ -28,10 +29,34 @@ final expenseServiceProvider =
 final reportServiceProvider =
     Provider((ref) => ReportService(ref.watch(databaseProvider)));
 
+final catalogRepositoryProvider =
+    Provider((ref) => CatalogRepository(ref.watch(databaseProvider)));
+
 /// The active shop, or null until onboarding is completed.
 final currentShopProvider = FutureProvider<Shop?>((ref) async {
   return ref.watch(onboardingServiceProvider).currentShop();
 });
+
+final productsProvider = FutureProvider.family<List<Product>, int>(
+  (ref, shopId) => ref.watch(catalogRepositoryProvider).products(shopId),
+);
+
+final partiesProvider = FutureProvider.family<List<Party>, int>(
+  (ref, shopId) => ref.watch(catalogRepositoryProvider).parties(shopId),
+);
+
+final accountsProvider = FutureProvider.family<List<Account>, int>(
+  (ref, shopId) => ref.watch(catalogRepositoryProvider).accounts(shopId),
+);
+
+final paymentMethodsProvider = FutureProvider.family<List<PaymentMethod>, int>(
+  (ref, shopId) =>
+      ref.watch(catalogRepositoryProvider).paymentMethods(shopId),
+);
+
+final taxRatesProvider = FutureProvider<List<TaxRateRow>>(
+  (ref) => ref.watch(catalogRepositoryProvider).taxRates(),
+);
 
 typedef DashboardData = ({
   int sales,

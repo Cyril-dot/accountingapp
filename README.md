@@ -33,7 +33,9 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 - [x] Drift SQLite schema + seed (chart of accounts, Ghana tax rates, payment methods).
 - [x] Posting services (sale/purchase/payment/expense) + reports; 41 tests passing.
 - [x] Onboarding + dashboard screens, PIN hashing, Riverpod wiring; 48 tests passing.
-- [ ] Sales / purchases / payments / expenses / inventory screens.
+- [x] Transaction screens (sell, purchase, payment, expense), inventory, parties,
+      and reports behind a bottom-nav shell; 49 tests passing.
+- [ ] Invoicing (PDF/WhatsApp), POS (barcode + printer), backup/export.
 
 ## Decisions (Phase 0, resolved)
 

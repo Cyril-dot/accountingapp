@@ -84,8 +84,9 @@ the public Play Store description and general accounting/POS knowledge. See
 4. ✅ Posting services + reports (`data/services/`) — sale, purchase, payment, expense,
    plus ledger / trial balance / P&L / VAT / dashboard. Tested end-to-end.
 5. ✅ Onboarding + dashboard screens (Riverpod wiring, PIN hashing, first cards).
-6. ⬜ Sales / purchases / payments / expenses / inventory screens.
-7. ⬜ Invoicing PDF/WhatsApp + accounting report screens.
+6. ✅ Sales / purchases / payments / expenses / inventory screens + parties + reports
+   (trial balance, P&L, VAT) behind a bottom-nav shell.
+7. ⬜ Invoicing PDF/WhatsApp + invoice/quote list & details.
 8. ⬜ POS (barcode + printer), backup/export, multi-shop polish.
 
 ## Known simplifications (deliberate, v1)
