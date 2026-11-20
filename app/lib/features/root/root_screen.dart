@@ -3,22 +3,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app_providers.dart';
 import '../home/home_shell.dart';
+import '../lock/lock_screen.dart';
 import '../onboarding/onboarding_screen.dart';
 
-/// Decides between onboarding and the dashboard based on whether a shop exists.
-class RootScreen extends ConsumerWidget {
+/// Decides between onboarding, the PIN lock, and the app shell.
+class RootScreen extends ConsumerStatefulWidget {
   const RootScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends ConsumerState<RootScreen> {
+  bool _locked = true;
+
+  @override
+  Widget build(BuildContext context) {
     final shop = ref.watch(currentShopProvider);
     return shop.when(
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(body: Center(child: Text('Failed to load: $e'))),
-      data: (shop) => shop == null
-          ? const OnboardingScreen()
-          : HomeShell(shopId: shop.id),
+      data: (shop) {
+        if (shop == null) return const OnboardingScreen();
+        if (_locked) {
+          return LockScreen(
+            shopId: shop.id,
+            onUnlock: () => setState(() => _locked = false),
+          );
+        }
+        return HomeShell(shopId: shop.id);
+      },
     );
   }
 }

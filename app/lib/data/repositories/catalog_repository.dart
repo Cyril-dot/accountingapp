@@ -83,6 +83,17 @@ class CatalogRepository {
 
   Future<List<TaxRateRow>> taxRates() => db.select(db.taxRates).get();
 
+  /// Sales and purchase invoices, newest first.
+  Future<List<Invoice>> invoices(int shopId) {
+    final q = db.select(db.invoices)
+      ..where((i) => i.shopId.equals(shopId))
+      ..orderBy([
+        (i) => OrderingTerm.desc(i.date),
+        (i) => OrderingTerm.desc(i.id),
+      ]);
+    return q.get();
+  }
+
   /// Returns the id of a "Walk-in customer" party, creating it on first use.
   Future<int> findOrCreateWalkInCustomer(int shopId) async {
     final rows = await (db.select(db.parties)

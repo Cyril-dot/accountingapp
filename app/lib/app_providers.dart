@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data/db/app_database.dart';
 import 'data/repositories/catalog_repository.dart';
+import 'data/services/auth_service.dart';
 import 'data/services/expense_service.dart';
 import 'data/services/onboarding_service.dart';
 import 'data/services/payment_service.dart';
@@ -18,6 +19,8 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 final onboardingServiceProvider =
     Provider((ref) => OnboardingService(ref.watch(databaseProvider)));
+final authServiceProvider =
+    Provider((ref) => AuthService(ref.watch(databaseProvider)));
 final saleServiceProvider =
     Provider((ref) => SaleService(ref.watch(databaseProvider)));
 final purchaseServiceProvider =
@@ -56,6 +59,10 @@ final paymentMethodsProvider = FutureProvider.family<List<PaymentMethod>, int>(
 
 final taxRatesProvider = FutureProvider<List<TaxRateRow>>(
   (ref) => ref.watch(catalogRepositoryProvider).taxRates(),
+);
+
+final invoicesProvider = FutureProvider.family<List<Invoice>, int>(
+  (ref, shopId) => ref.watch(catalogRepositoryProvider).invoices(shopId),
 );
 
 typedef DashboardData = ({

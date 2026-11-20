@@ -34,8 +34,9 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 - [x] Posting services (sale/purchase/payment/expense) + reports; 41 tests passing.
 - [x] Onboarding + dashboard screens, PIN hashing, Riverpod wiring; 48 tests passing.
 - [x] Transaction screens (sell, purchase, payment, expense), inventory, parties,
-      and reports behind a bottom-nav shell; 49 tests passing.
-- [ ] Invoicing (PDF/WhatsApp), POS (barcode + printer), backup/export.
+      and reports behind a bottom-nav shell.
+- [x] PIN lock on launch, invoice list, per-account ledger, money-owed; 51 tests.
+- [ ] Invoicing PDF/WhatsApp, POS (barcode + printer), backup/export.
 
 ## Decisions (Phase 0, resolved)
 

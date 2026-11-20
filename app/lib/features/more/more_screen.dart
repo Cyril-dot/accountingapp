@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../invoices/invoices_screen.dart';
 import '../parties/parties_screen.dart';
 import '../payments/payment_screen.dart';
 import '../purchases/purchase_screen.dart';
@@ -19,6 +20,8 @@ class MoreScreen extends StatelessWidget {
       (Icons.shopping_cart_outlined, 'Purchases',
           () => PurchaseScreen(shopId: shopId)),
       (Icons.payments_outlined, 'Payments', () => PaymentScreen(shopId: shopId)),
+      (Icons.description_outlined, 'Invoices',
+          () => InvoicesScreen(shopId: shopId)),
       (Icons.account_balance_wallet_outlined, 'Money owed',
           () => ReceivablesScreen(shopId: shopId)),
       (Icons.receipt_outlined, 'Ledger', () => LedgerScreen(shopId: shopId)),

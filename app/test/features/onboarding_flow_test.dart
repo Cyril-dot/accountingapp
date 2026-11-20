@@ -47,6 +47,19 @@ void main() {
     await settle(tester);
     await tester.pumpAndSettle();
 
+    // The PIN lock appears. A wrong PIN stays locked, the right one unlocks.
+    expect(find.byKey(const Key('pinField')), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('pinField')), '0000');
+    await tester.tap(find.byKey(const Key('unlockButton')));
+    await settle(tester);
+    await tester.pumpAndSettle();
+    expect(find.text('Wrong PIN'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('pinField')), '1234');
+    await tester.tap(find.byKey(const Key('unlockButton')));
+    await settle(tester);
+    await tester.pumpAndSettle();
+
     expect(find.text('Dashboard'), findsOneWidget);
 
     // The database now holds one business, shop, owner, chart and methods.
