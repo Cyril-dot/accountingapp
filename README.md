@@ -36,8 +36,9 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 - [x] Transaction screens (sell, purchase, payment, expense), inventory, parties,
       and reports behind a bottom-nav shell.
 - [x] PIN lock on launch, invoice list, per-account ledger, money-owed.
-- [x] Invoice PDF generation + WhatsApp share (pdf/share_plus); 52 tests.
-- [ ] POS (barcode + printer), backup/export to file.
+- [x] Invoice PDF generation + WhatsApp share (pdf/share_plus).
+- [x] Backup database + export journal to CSV (Excel-compatible); 53 tests.
+- [ ] POS (barcode + printer), multi-user role enforcement.
 
 ## Decisions (Phase 0, resolved)
 

@@ -7,6 +7,7 @@ import '../purchases/purchase_screen.dart';
 import '../reports/ledger_screen.dart';
 import '../reports/receivables_screen.dart';
 import '../reports/reports_screen.dart';
+import '../settings/backup_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   final int shopId;
@@ -26,6 +27,8 @@ class MoreScreen extends StatelessWidget {
           () => ReceivablesScreen(shopId: shopId)),
       (Icons.receipt_outlined, 'Ledger', () => LedgerScreen(shopId: shopId)),
       (Icons.bar_chart, 'Reports', () => ReportsScreen(shopId: shopId)),
+      (Icons.backup_outlined, 'Backup & export',
+          () => BackupScreen(shopId: shopId)),
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('More')),

@@ -4,6 +4,7 @@ import 'data/db/app_database.dart';
 import 'data/repositories/catalog_repository.dart';
 import 'data/services/auth_service.dart';
 import 'data/services/expense_service.dart';
+import 'data/services/export_service.dart';
 import 'data/services/onboarding_service.dart';
 import 'data/services/payment_service.dart';
 import 'data/services/purchase_service.dart';
@@ -21,6 +22,8 @@ final onboardingServiceProvider =
     Provider((ref) => OnboardingService(ref.watch(databaseProvider)));
 final authServiceProvider =
     Provider((ref) => AuthService(ref.watch(databaseProvider)));
+final exportServiceProvider =
+    Provider((ref) => ExportService(ref.watch(databaseProvider)));
 final saleServiceProvider =
     Provider((ref) => SaleService(ref.watch(databaseProvider)));
 final purchaseServiceProvider =
