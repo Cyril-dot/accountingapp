@@ -134,7 +134,9 @@ class SaleService {
               invoiceKind: InvoiceKind.sale,
               partyId: partyId,
               date: date,
-              invoiceStatus: InvoiceStatus.issued,
+              // A cash sale is settled immediately; a credit sale stays open.
+              invoiceStatus: onCredit ? InvoiceStatus.issued : InvoiceStatus.paid,
+              paidTotal: Value(onCredit ? 0 : total),
               subtotal: subtotal,
               discountTotal: discountTotal,
               taxTotal: taxTotal,

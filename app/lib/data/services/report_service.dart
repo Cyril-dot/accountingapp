@@ -194,4 +194,42 @@ class ReportService {
   }
 
   static int _sum(Iterable<int> values) => values.fold(0, (s, v) => s + v);
+
+  /// Outstanding receivables (what customers owe us) and payables (what we owe
+  /// suppliers) per party, computed from open invoices.
+  Future<List<({int partyId, String name, PartyKind kind, int receivable, int payable})>>
+      partyBalances(int shopId) async {
+    final parties = await (db.select(db.parties)
+          ..where((p) => p.shopId.equals(shopId)))
+        .get();
+    final invoices = await (db.select(db.invoices)
+          ..where((i) => i.shopId.equals(shopId)))
+        .get();
+
+    final result = <({int partyId, String name, PartyKind kind, int receivable, int payable})>[];
+    for (final party in parties) {
+      var receivable = 0;
+      var payable = 0;
+      for (final inv in invoices) {
+        if (inv.partyId != party.id) continue;
+        if (inv.invoiceStatus == InvoiceStatus.paid ||
+            inv.invoiceStatus == InvoiceStatus.voided) {
+          continue;
+        }
+        final open = inv.total - inv.paidTotal;
+        if (inv.invoiceKind == InvoiceKind.sale) receivable += open;
+        if (inv.invoiceKind == InvoiceKind.purchase) payable += open;
+      }
+      if (receivable != 0 || payable != 0) {
+        result.add((
+          partyId: party.id,
+          name: party.name,
+          kind: party.partyKind,
+          receivable: receivable,
+          payable: payable,
+        ));
+      }
+    }
+    return result;
+  }
 }

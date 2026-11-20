@@ -120,7 +120,9 @@ class PurchaseService {
               invoiceKind: InvoiceKind.purchase,
               partyId: supplierId,
               date: date,
-              invoiceStatus: InvoiceStatus.issued,
+              // A cash purchase is settled immediately; credit stays open.
+              invoiceStatus: onCredit ? InvoiceStatus.issued : InvoiceStatus.paid,
+              paidTotal: Value(onCredit ? 0 : total),
               subtotal: subtotal,
               discountTotal: discountTotal,
               taxTotal: taxTotal,

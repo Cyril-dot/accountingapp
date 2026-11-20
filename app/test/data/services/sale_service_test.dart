@@ -91,7 +91,8 @@ void main() {
         .getSingle();
     expect(invoice.number, 'INV-00001');
     expect(invoice.invoiceKind, InvoiceKind.sale);
-    expect(invoice.invoiceStatus, InvoiceStatus.issued);
+    expect(invoice.invoiceStatus, InvoiceStatus.paid); // cash = settled now
+    expect(invoice.paidTotal, 2760);
     expect(invoice.subtotal, 2400);
     expect(invoice.taxTotal, 360); // 15% of 2400
     expect(invoice.total, 2760);
