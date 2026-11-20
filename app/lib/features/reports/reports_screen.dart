@@ -18,8 +18,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   int _revenue = 0;
   int _costs = 0;
   int _profit = 0;
-  int _outputVat = 0;
-  int _inputVat = 0;
+  List<({int year, int month, int outputVat, int inputVat, int netVat})>
+      _monthlyVat = [];
   List<({String code, String name, AccountType type, int balance})> _tb = [];
 
   @override
@@ -31,15 +31,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   Future<void> _load() async {
     final reports = ref.read(reportServiceProvider);
     final pl = await reports.profitAndLoss(widget.shopId);
-    final vat = await reports.vatSummary(widget.shopId);
+    final monthly = await reports.monthlyVatSummary(widget.shopId);
     final tb = await reports.trialBalance(widget.shopId);
     if (mounted) {
       setState(() {
         _revenue = pl.revenue;
         _costs = pl.costs;
         _profit = pl.profit;
-        _outputVat = vat.outputVat;
-        _inputVat = vat.inputVat;
+        _monthlyVat = monthly;
         _tb = tb.where((r) => r.balance != 0).toList();
         _loading = false;
       });
@@ -49,7 +48,15 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reports')),
+      appBar: AppBar(
+        title: const Text('Reports'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _load,
+          ),
+        ],
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
@@ -60,11 +67,35 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                   ('Costs', _costs),
                   ('Profit', _profit),
                 ]),
-                _section(context, 'VAT summary', [
-                  ('Output VAT', _outputVat),
-                  ('Input VAT', _inputVat),
-                  ('Net VAT', _outputVat - _inputVat),
-                ]),
+                Text('VAT summary (monthly)',
+                    style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                if (_monthlyVat.isEmpty)
+                  const Text('No VAT posted yet.')
+                else
+                  Card(
+                    child: Column(
+                      children: [
+                        for (final m in _monthlyVat)
+                          ListTile(
+                            dense: true,
+                            title: Text('${_monthName(m.month)} ${m.year}'),
+                            subtitle: Text(
+                                'Output ${Money(m.outputVat).format()} · Input ${Money(m.inputVat).format()}'),
+                            trailing: Text(
+                              Money(m.netVat).format(),
+                              style: TextStyle(
+                                color: m.netVat >= 0
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.error,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                const SizedBox(height: 16),
                 Text('Trial balance',
                     style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 8),
@@ -106,4 +137,19 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ],
     );
   }
+
+  static String _monthName(int m) => const [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ][m - 1];
 }

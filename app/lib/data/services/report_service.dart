@@ -195,6 +195,76 @@ class ReportService {
 
   static int _sum(Iterable<int> values) => values.fold(0, (s, v) => s + v);
 
+  /// Monthly VAT output (sales tax) vs input (purchase tax), grouped by month.
+  /// A shop owner can hand this to their accountant or the GRA.
+  Future<List<({int year, int month, int outputVat, int inputVat, int netVat})>>
+      monthlyVatSummary(int shopId) async {
+    final accounts = await (db.select(db.accounts)
+          ..where((a) => a.shopId.equals(shopId)))
+        .get();
+    final vatOutputId = accounts.firstWhere((a) => a.code == '2100').id;
+    final vatInputId = accounts.firstWhere((a) => a.code == '1250').id;
+
+    final select = db.select(db.journalLines)
+      ..where((l) => l.accountId.equals(vatOutputId) | l.accountId.equals(vatInputId));
+    final joined = select.join([
+      innerJoin(db.journalEntries,
+          db.journalEntries.id.equalsExp(db.journalLines.entryId)),
+    ]);
+    final rows = await joined.get();
+
+    final byMonth = <(int, int), ({int output, int input})>{};
+    for (final row in rows) {
+      final line = row.readTable(db.journalLines);
+      final entry = row.readTable(db.journalEntries);
+      final key = (entry.date.year, entry.date.month);
+      final cur = byMonth[key] ?? (output: 0, input: 0);
+      if (line.accountId == vatOutputId) {
+        byMonth[key] = (output: cur.output + line.credit, input: cur.input);
+      } else {
+        byMonth[key] = (output: cur.output, input: cur.input + line.debit);
+      }
+    }
+
+    final result = [
+      for (final e in byMonth.entries)
+        (
+          year: e.key.$1,
+          month: e.key.$2,
+          outputVat: e.value.output,
+          inputVat: e.value.input,
+          netVat: e.value.output - e.value.input,
+        ),
+    ]..sort((a, b) =>
+        a.year != b.year ? a.year.compareTo(b.year) : a.month.compareTo(b.month));
+    return result;
+  }
+
+  /// Products at or below their reorder level.
+  Future<List<Product>> lowStock(int shopId) async {
+    final products = await (db.select(db.products)
+          ..where((p) => p.shopId.equals(shopId)))
+        .get();
+    return products
+        .where((p) => p.reorderLevel > 0 && p.stockOnHand <= p.reorderLevel)
+        .toList();
+  }
+
+  /// Products expiring between now and [days] from now.
+  Future<List<Product>> expiringSoon(int shopId, {int days = 30}) async {
+    final products = await (db.select(db.products)
+          ..where((p) => p.shopId.equals(shopId)))
+        .get();
+    final now = DateTime.now();
+    final limit = now.add(Duration(days: days));
+    return products
+        .where((p) =>
+            p.expiresAt != null &&
+            p.expiresAt!.isAfter(now) &&
+            p.expiresAt!.isBefore(limit))
+        .toList();
+  }
+
   /// Outstanding receivables (what customers owe us) and payables (what we owe
   /// suppliers) per party, computed from open invoices.
   Future<List<({int partyId, String name, PartyKind kind, int receivable, int payable})>>
