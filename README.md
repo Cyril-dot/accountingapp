@@ -32,7 +32,8 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 - [x] Core engine: integer-pesewa money, tax math, double-entry journalizer.
 - [x] Drift SQLite schema + seed (chart of accounts, Ghana tax rates, payment methods).
 - [x] Posting services (sale/purchase/payment/expense) + reports; 41 tests passing.
-- [ ] First screens (onboarding + dashboard) on top of the data layer.
+- [x] Onboarding + dashboard screens, PIN hashing, Riverpod wiring; 48 tests passing.
+- [ ] Sales / purchases / payments / expenses / inventory screens.
 
 ## Decisions (Phase 0, resolved)
 

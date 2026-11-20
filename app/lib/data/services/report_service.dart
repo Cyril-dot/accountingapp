@@ -122,10 +122,37 @@ class ReportService {
     ];
   }
 
+  /// Profit for a period: income-account credits minus expense-account debits,
+  /// from posted journal lines (so it excludes VAT, which is a liability).
+  Future<int> profitInPeriod(int shopId,
+      {required DateTime from, required DateTime to}) async {
+    final rows = await (db.select(db.journalLines).join([
+      innerJoin(db.journalEntries,
+          db.journalEntries.id.equalsExp(db.journalLines.entryId)),
+      innerJoin(db.accounts, db.accounts.id.equalsExp(db.journalLines.accountId)),
+    ])
+          ..where(db.accounts.shopId.equals(shopId))
+          ..where(db.journalEntries.date.isBiggerOrEqualValue(from))
+          ..where(db.journalEntries.date.isSmallerOrEqualValue(to)))
+        .get();
+
+    var revenue = 0;
+    var costs = 0;
+    for (final row in rows) {
+      final line = row.readTable(db.journalLines);
+      final account = row.readTable(db.accounts);
+      if (account.accountType == AccountType.income) revenue += line.credit;
+      if (account.accountType == AccountType.expense) costs += line.debit;
+    }
+    return revenue - costs;
+  }
+
   /// Dashboard figures for a date range, from source documents and balances.
   Future<({int sales, int purchases, int paymentsReceived, int paymentsMade,
-      int expenses, int cash, int bank, int momo})> dashboard(int shopId,
-      {required DateTime from, required DateTime to}) async {
+      int expenses, int profit, int cash, int bank, int momo})> dashboard(
+      int shopId,
+      {required DateTime from,
+      required DateTime to}) async {
     final invoices = await (db.select(db.invoices)
           ..where((i) => i.shopId.equals(shopId)))
         .get();
@@ -157,6 +184,7 @@ class ReportService {
           .where((p) => p.direction == PaymentDirection.made && inRange(p.date))
           .map((p) => p.amount)),
       expenses: _sum(expenses.where((e) => inRange(e.date)).map((e) => e.amount)),
+      profit: await profitInPeriod(shopId, from: from, to: to),
       cash: balances[idFor('1000')] ?? 0,
       bank: balances[idFor('1010')] ?? 0,
       momo: (balances[idFor('1020')] ?? 0) +

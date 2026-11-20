@@ -83,7 +83,7 @@ the public Play Store description and general accounting/POS knowledge. See
 3. ✅ Database (drift schema + seed, `data/db/`) — tested.
 4. ✅ Posting services + reports (`data/services/`) — sale, purchase, payment, expense,
    plus ledger / trial balance / P&L / VAT / dashboard. Tested end-to-end.
-5. ⬜ Onboarding + dashboard screens (next).
+5. ✅ Onboarding + dashboard screens (Riverpod wiring, PIN hashing, first cards).
 6. ⬜ Sales / purchases / payments / expenses / inventory screens.
 7. ⬜ Invoicing PDF/WhatsApp + accounting report screens.
 8. ⬜ POS (barcode + printer), backup/export, multi-shop polish.

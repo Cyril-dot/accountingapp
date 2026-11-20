@@ -124,13 +124,14 @@ class AppDatabase extends _$AppDatabase {
       (name: 'Bank transfer', code: '1010'),
     ];
 
-    await batch((b) => b.insertAll(paymentMethods, [
-      for (final m in methods)
+    for (final m in methods) {
+      await into(paymentMethods).insert(
         PaymentMethodsCompanion.insert(
           shopId: shopId,
           name: m.name,
           accountId: accountsByCode[m.code]!,
         ),
-    ]));
+      );
+    }
   }
 }
