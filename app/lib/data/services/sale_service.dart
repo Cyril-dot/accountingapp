@@ -96,7 +96,7 @@ class SaleService {
       var taxTotal = 0;
       var total = 0;
       var costTotal = 0;
-      final computed = <({SaleLineInput line, LineTotals totals, int cost, int stockBefore})>[];
+      final computed = <({SaleLineInput line, LineTotals totals, int lineCost, int unitCost, int stockBefore})>[];
 
       for (final line in lines) {
         final product = await (db.select(db.products)
@@ -110,16 +110,18 @@ class SaleService {
           discountPesewas: line.discountPesewas,
           taxRate: engineRate,
         );
-        final cost = roundDiv(product.cost * line.qtyThousandths, 1000);
+        final unitCost = product.cost;
+        final lineCost = roundDiv(product.cost * line.qtyThousandths, 1000);
         subtotal += totals.netPesewas;
         discountTotal += totals.discountPesewas;
         taxTotal += totals.taxPesewas;
         total += totals.totalPesewas;
-        costTotal += cost;
+        costTotal += lineCost;
         computed.add((
           line: line,
           totals: totals,
-          cost: cost,
+          lineCost: lineCost,
+          unitCost: unitCost,
           stockBefore: product.stockOnHand,
         ));
       }
@@ -215,7 +217,7 @@ class SaleService {
                 date: date,
                 movementType: StockMovementType.sale,
                 deltaQty: -c.line.qtyThousandths,
-                unitCost: c.cost,
+                unitCost: c.unitCost,
                 refType: 'invoice',
                 refId: Value(invoiceId),
               ),
