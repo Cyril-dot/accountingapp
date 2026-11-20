@@ -28,7 +28,11 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 - [x] Wrote the data model (`docs/data-model.md`) — pesewa integers + balanced double-entry.
 - [x] Wrote the feature spec (`docs/feature-spec.md`).
 - [x] Phase 0 decisions recorded — see "Decisions" below.
-- [ ] Scaffold the Flutter repo and build the first screen.
+- [x] Flutter repo scaffolded (android + ios), `flutter analyze` clean.
+- [x] Core engine: integer-pesewa money, tax math, double-entry journalizer.
+- [x] Drift SQLite schema + seed (chart of accounts, Ghana tax rates, payment methods).
+- [x] Posting services (sale/purchase/payment/expense) + reports; 41 tests passing.
+- [ ] First screens (onboarding + dashboard) on top of the data layer.
 
 ## Decisions (Phase 0, resolved)
 
@@ -42,5 +46,5 @@ name, screens and wording. Nothing is copied from the proprietary APK.
 
 ## Next step
 
-Scaffold the Flutter repo, then build the first screen on top of the data model
-already written in `docs/data-model.md`.
+Build the first screens — onboarding (business + shop setup + PIN) and the dashboard —
+on top of the already-tested data layer in `app/lib/data/`.

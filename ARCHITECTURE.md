@@ -75,3 +75,26 @@ app/test/
 The original proprietary APK is never decompiled for code or assets. Features are from
 the public Play Store description and general accounting/POS knowledge. See
 `../LICENCES.md`.
+
+## Progress (build order)
+
+1. ✅ Money + tax math (`core/money.dart`, `domain/engine/tax.dart`) — tested.
+2. ✅ Double-entry engine (`domain/engine/journal.dart`) — tested.
+3. ✅ Database (drift schema + seed, `data/db/`) — tested.
+4. ✅ Posting services + reports (`data/services/`) — sale, purchase, payment, expense,
+   plus ledger / trial balance / P&L / VAT / dashboard. Tested end-to-end.
+5. ⬜ Onboarding + dashboard screens (next).
+6. ⬜ Sales / purchases / payments / expenses / inventory screens.
+7. ⬜ Invoicing PDF/WhatsApp + accounting report screens.
+8. ⬜ POS (barcode + printer), backup/export, multi-shop polish.
+
+## Known simplifications (deliberate, v1)
+
+- **One tax rate per line.** `computeLine` applies a single rate. Ghana's stacked levies
+  (VAT + NHIL + GETFund + COVID) on one line will need a *list* of rates per line; the
+  engine is shaped so this is an additive change, not a rewrite. Until then, levies can
+  be entered as separate rates/lines.
+- **Output tax posts to one account.** Sales tax (VAT and any levies) posts to the VAT
+  output account; a per-levy breakdown report is a later phase.
+- **Soft deletes / no foreign-key cascades** — columns are plain, joins are explicit.
+- **Sequential document numbers** per shop (`INV-00001`, `PAY-00001`, `JE-00001`).
